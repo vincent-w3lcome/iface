@@ -5,9 +5,6 @@ import os
 
 import jieba
 
-from gensim.models import word2vec
-from gensim import models
-
 
 class Loader(object):
 
