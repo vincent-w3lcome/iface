@@ -2,4 +2,4 @@
 
 source /usr/src/yuwenmao/iface/venv/bin/activate
 
-python /usr/src/yuwenmao/iface/main.py
+uwsgi --ini /usr/src/yuwenmao/iface/conf/uwsgi.ini

@@ -1,12 +1,18 @@
-import sys
+# -*- coding: utf-8 -*-#
 from chat import chatbot
+from flask import Flask
 
 chatter = chatbot.Chatbot(threshold=50, debug=False)
 
-print("Hello, 我是韩小喵.")
-print("请输入文字或语音:")
+app = Flask(__name__)
 
-while True:
-    speech = input()
-    ret = chatter.run(speech)
-    print('------------------------------')
+@app.route("/search/<query>", methods=['GET'])
+def run(query):
+    return chatter.run(query)[0][0]['Content']
+
+if __name__ == "__main__":
+    app.run(
+        host="0.0.0.0",
+        port=8080,
+        debug=True
+    )

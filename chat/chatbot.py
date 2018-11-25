@@ -81,13 +81,16 @@ class Chatbot(object):
     def saveMsg(self, msgBuf, path="./"):
 
         path = os.path.join(os.path.dirname(__file__), "data", "msgHistory")
+        if not os.path.exists(path):
+            os.mkdir(path)
+
         if msgBuf.user:
             fileName = msgBuf.user + ".txt"
         else:
             fileName = "noUser.txt"
 
         try:
-            f = open(path + '/' + fileName, 'a', encoding='utf-8')
+            f = open(path + '/' + fileName, 'a+', encoding='utf-8')
             msgBuf.setTargetIndex(list(msgBuf.getTargetIndex()))
             f.write(json.dumps(msgBuf.__dict__))
             f.write('\n')

@@ -57,10 +57,9 @@ class Loader(object):
                     self.urls.append(r[0]['Url'])
                     self.fileTypes.append(r[0]['FileType'])
                 self.titles_len.append([len(self.titles), f.split(".")[0]])
-                logging.info("Loaded labels: %s", str(self.labels))
+                logging.debug("Loaded labels: %s", str(self.labels))
 
         logging.debug("Loaded titles: %s", str(self.titles))
-        logging.debug("Loaded labels: %s", str(self.labels))
 
         for index, labels in enumerate(self.labels):
             for word in labels:
