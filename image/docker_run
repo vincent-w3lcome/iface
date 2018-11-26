@@ -4,4 +4,4 @@
 docker run --network host -d yuwenmao/iface
 
 # run nginx
-docker run --network host -d yuwenmao/nginx
+docker run -v /etc/nginx:/etc/nginx -d yuwenmao/nginx
