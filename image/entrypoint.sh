@@ -2,4 +2,4 @@
 
 source /usr/src/yuwenmao/iface/venv/bin/activate
 
-uwsgi --ini /usr/src/yuwenmao/iface/conf/uwsgi.ini
+cd /usr/src/yuwenmao/iface/ && export LANG=en_US.UTF-8; uwsgi --ini ./conf/uwsgi.ini
