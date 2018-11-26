@@ -1,0 +1,12 @@
+FROM fedora:28
+
+RUN dnf install -y nginx
+
+ADD ./conf/nginx.conf /etc/nginx/conf.d/
+
+RUN systemctl enable nginx
+RUN systemctl start nginx
+
+WORKDIR /
+
+LABEL io.k8s.display-name="YuWenMao Nginx"
