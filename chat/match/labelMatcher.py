@@ -4,27 +4,18 @@ from .matcher import Matcher
 
 class labelMatcher(Matcher):
 
-    def __init__(self, inverted_labels, inverted_namedLabels):
-        self.inverted_labels = inverted_labels
-        self.inverted_namedLabels = inverted_namedLabels
+    def __init__(self, dbInstance):
+        self.db = dbInstance
 
-    def match(self, msgBuf):
+    def match(self, tag):
 
         logging.info("Starting matching labels")
 
-        for label in self.inverted_labels.keys():
-            if label == msgBuf.getQuery():
-                if not msgBuf.getTargetIndex():
-                    msgBuf.setTargetIndex(msgBuf.getTargetIndex() | (self.inverted_labels[label]))
-                else:
-                    msgBuf.setTargetIndex(msgBuf.getTargetIndex() & (self.inverted_labels[label]))
+        if tag == None or tag == "":
+            logging.info("Empty Query Detected, skip label matching")
+            return set()
 
-        for label in self.inverted_namedLabels.keys():
-            if label == msgBuf.getQuery():
-                if not msgBuf.getTargetIndex():
-                    msgBuf.setTargetIndex(msgBuf.getTargetIndex() | (self.inverted_namedLabels[label]))
-                else:
-                    msgBuf.setTargetIndex(msgBuf.getTargetIndex() & (self.inverted_namedLabels[label]))
+        ret = self.db.queryContain("video", "tags", tag)
+        logging.debug("Matched database records: %s", ret )
 
-
-        logging.debug("Matched inverted (named)Labels: %s", str(msgBuf.getTargetIndex()))
+        return ret

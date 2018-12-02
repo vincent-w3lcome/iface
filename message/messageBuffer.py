@@ -4,15 +4,12 @@ class messageBuffer(object):
 
         self.user = user
         self.group = group
-
         self.query = query
-        self.strippedQuery = None
-        self.segQuery = None
-        self.sim = []
-        self.reply = []
-        self.replyIndex = []
-
-        self.targetIndex = set()
+        self.segQuery = []
+        self.reply = query
+        self.replyIndex = set()
+        self.labelIndex = set()
+        self.containIndex = set()
 
     def setUser(self, user):
         self.user = user
@@ -26,23 +23,11 @@ class messageBuffer(object):
     def getGroup(self):
         return self.group
 
-    def setSimilarity(self, sim):
-        self.sim = sim
-
-    def getSimilarity(self):
-        return self.sim
-
     def setQuery(self, query):
         self.query = query
 
     def getQuery(self):
         return self.query
-
-    def setStrippedQuery(self, strippedQuery):
-        self.strippedQuery = strippedQuery
-
-    def getStrippedQuery(self):
-        return self.strippedQuery
 
     def setSegQuery(self, segQuery):
         self.segQuery = segQuery
@@ -50,23 +35,17 @@ class messageBuffer(object):
     def getSegQuery(self):
         return self.segQuery
 
-    def setReply(self, reply):
-        self.reply = reply
-
-    def getReply(self):
-        return self.reply
-
     def setReplyIndex(self, index):
         self.replyIndex = index
 
     def getReplyIndex(self):
         return self.replyIndex
 
-    def setTargetIndex(self, targetIdx):
-        self.targetIndex = targetIdx
+    def setReply(self, reply):
+        self.reply = reply
 
-    def getTargetIndex(self):
-        return self.targetIndex
+    def getReply(self):
+        return self.reply
 
 
 class Buffer(object):

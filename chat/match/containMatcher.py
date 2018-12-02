@@ -4,32 +4,18 @@ from .matcher import Matcher
 
 class containMatcher(Matcher):
 
-    def __init__(self, contents):
-        self.contents = contents
+    def __init__(self, dbInstance):
+        self.db = dbInstance
 
-    def match(self, msgBuf):
+    def match(self, heading):
 
         logging.info("Starting 'contain' matching")
 
-        targetIndex = set()
-        query = msgBuf.getQuery()
+        if heading == None or heading == "":
+            logging.info("Empty Query Detected, skip contain matching")
+            return set()
 
-        if query == None or query == "":
-            return
+        ret = self.db.queryContain("video", "content", heading)
+        logging.debug("containMatches records: '%s'", ret)
 
-        queryList = query.split(" ")
-
-        for index, content in enumerate(self.contents):
-
-            count = 0
-
-            for q in queryList:
-                if q in content:
-                    count = count + 1
-
-            if count == len(queryList):
-                targetIndex.add(index)
-
-        msgBuf.setTargetIndex(targetIndex)
-                
-        logging.info("containMatcher 后的 targetIndex : '%s'", msgBuf.getTargetIndex())
+        return ret

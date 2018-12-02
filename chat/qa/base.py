@@ -1,23 +1,20 @@
 # coding=utf-8
-
-import json
 import logging
-import os
 
-from chat.load.loader import Loader
 from chat.match.labelMatcher import labelMatcher
 from chat.match.containMatcher import containMatcher
 from chat.match.bm25Matcher import bestMatchingMatcher
+from db.sql import Db
+from db.video import Video
 
 class Answerer(object):
 
     def __init__(self):
 
-        self.loader = Loader(os.path.join(os.path.dirname(__file__), ".."))
-        self.labelMatcher = labelMatcher(self.loader.inverted_labels, self.loader.inverted_namedLabels)
-        self.containMatcher = containMatcher(self.loader.titles)
-        self.bm25Matcher = bestMatchingMatcher(self.loader.titles, self.loader.segTitles)
-        self.moduleTest()
+        self.database = Db()
+        self.labelMatcher = labelMatcher(self.database)
+        self.containMatcher = containMatcher(self.database)
+        # self.moduleTest()
 
     def moduleTest(self):
 
@@ -31,31 +28,51 @@ class Answerer(object):
 
     def getResponse(self, msgBuf, threshold=0):
 
-        self.labelMatcher.match(msgBuf)
+        logging.info("=======================================================\n")
 
-        if not msgBuf.getTargetIndex():
-            logging.info("Cannot match any existing labels, "
-                         "matching titles directly...")
-            self.containMatcher.match(msgBuf)
+        query = msgBuf.getQuery()
 
-        logging.debug("targetIndex(s): %s" % msgBuf.getTargetIndex())
+        self.labelMatcher.match(query)
 
-        if msgBuf.getTargetIndex():
-            # self.bm25Matcher.match(msgBuf)
+        self.containMatcher.match(query)
 
-            logging.info("=======================================================\n")
+        logging.info("=======================================================\n")
 
-#            for item in msgBuf.getReplyIndex():
-            for item in msgBuf.getTargetIndex():
+    def getLabelResponse(self, msgBuf, threshold=0):
 
-                response = self.loader.getResponse(item)
-                (msgBuf.getReply()).append(response)
+        logging.info("=======================================================\n")
 
-            logging.info("=======================================================\n")
+        tag = msgBuf.getQuery()
 
-        else:
-            self.bm25Matcher.match(msgBuf)
+        records = self.labelMatcher.match(tag)
+
+        if len(records) <= 0:
+            return
+
+        for record in records:
+            v = Video(record)
+            v.show()
+            msgBuf.labelIndex.update(str(v.id))
             
+        logging.info("=======================================================\n")
+
+    def getContainResponse(self, msgBuf, threshold=0):
+
+        logging.info("=======================================================\n")
+
+        heading = msgBuf.getQuery()
+
+        records = self.containMatcher.match(heading)
+
+        if len(records) <= 0:
+            return
+
+        for record in records:
+            v = Video(record)
+            v.show()
+            msgBuf.containIndex.update(str(v.id))
+            
+        logging.info("=======================================================\n")
 
     def randomPick(self, answers):
 

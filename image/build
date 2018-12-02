@@ -2,6 +2,3 @@
 
 # build iface image
 docker build -t yuwenmao/iface -f ./Dockerfile ../
-
-# build nginx image
-docker build -t yuwenmao/nginx -f ./Dockerfile.nginx ../

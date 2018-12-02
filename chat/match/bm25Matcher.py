@@ -2,6 +2,7 @@ import logging
 import math
 
 from .matcher import Matcher
+from chat.utils import utils
 
 
 class bestMatchingMatcher(Matcher):
@@ -128,7 +129,7 @@ class bestMatchingMatcher(Matcher):
         reply_index = []
 
         # Segment query
-        seg_query = self.wordSegmentation(msgBuf.getQuery())
+        seg_query = utils.wordSegmentation(msgBuf.getQuery())
         logging.debug("Segmented query: %s" % str(seg_query))
 
         for index in msgBuf.getTargetIndex():

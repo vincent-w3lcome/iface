@@ -28,12 +28,8 @@ class Chatbot(object):
         try:
             self.answerer = Answerer()
         except Exception as e:
+            self.answerer.database.close()
             logging.exception("[QA] 问答资料集未载入")
-
-        self.default_response = [
-            "小喵老师正在疯狂的录制这个内容中...",
-            "没太搞明白问题.换种方式问一下试试.."
-        ]
 
     def run(self, speech):
 
@@ -57,29 +53,11 @@ class Chatbot(object):
         return ret
 
     def analyse(self, msgBuf, threshold=0):
-
-        self.getResponseForQA(msgBuf, threshold)
-        # if msgBuf.getSimilarity() < threshold or msgBuf.getReply() is None:
-        #     msgBuf.setReply(self.getDefaultResponse())
-
-    def getResponseForQA(self, msgBuf, threshold=0):
-
-        self.answerer.getResponse(msgBuf, threshold)
-
-    def getDefaultResponse(self, msgBuf=None):
-
-        self.default_response[random.randrange(0,len(self.default_response))]
-
-        res = [{
-            "Url": "不存在",
-            "Content": "不存在",
-            "FileType": "png"
-        }]
-
-        return res
+        #self.answerer.getResponse(msgBuf, threshold)
+        self.answerer.getLabelResponse(msgBuf, threshold)
+        self.answerer.getContainResponse(msgBuf, threshold)
 
     def saveMsg(self, msgBuf, path="./"):
-
         path = os.path.join(os.path.dirname(__file__), "data", "msgHistory")
         if not os.path.exists(path):
             os.mkdir(path)
@@ -91,8 +69,8 @@ class Chatbot(object):
 
         try:
             f = open(path + '/' + fileName, 'a+', encoding='utf-8')
-            msgBuf.setTargetIndex(list(msgBuf.getTargetIndex()))
-            f.write(json.dumps(msgBuf.__dict__))
+            #msgBuf.setTargetIndex(list(msgBuf.getTargetIndex()))
+            #f.write(json.dumps(msgBuf.__dict__))
             f.write('\n')
             f.close()
         except Exception as e:
