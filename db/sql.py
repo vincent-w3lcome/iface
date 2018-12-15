@@ -4,7 +4,7 @@ import MySQLdb
 
 class Db(object):
 
-    def __init__(self, host="localhost", user="root", passwd="", database="yuwenmao"):
+    def __init__(self, host="localhost", user="root", passwd="yuwenmao", database="yuwenmao"):
 
         self.con = MySQLdb.connect(host, user, passwd, database, charset="utf8")
         self.cursor = self.con.cursor()
