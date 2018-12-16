@@ -8,7 +8,7 @@ app = Flask(__name__)
 
 @app.route("/search/<query>", methods=['GET'])
 def run(query):
-    return chatter.run(query)[0][0]['Content']
+    return chatter.run(query)
 
 if __name__ == "__main__":
     app.run(
