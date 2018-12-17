@@ -50,7 +50,7 @@ class Chatbot(object):
         # Log file at "chat/data/msgHistory/<userName>.txt"
         self.saveMsg(msgBuf)
 
-        return ret
+        return str(ret)
 
     def analyse(self, msgBuf, threshold=0):
         #self.answerer.getResponse(msgBuf, threshold)

@@ -6,7 +6,7 @@ class messageBuffer(object):
         self.group = group
         self.query = query
         self.segQuery = []
-        self.reply = query
+        self.reply = []
         self.replyIndex = set()
         self.labelIndex = set()
         self.containIndex = set()
@@ -42,7 +42,7 @@ class messageBuffer(object):
         return self.replyIndex
 
     def setReply(self, reply):
-        self.reply = reply
+        self.reply.append(reply)
 
     def getReply(self):
         return self.reply

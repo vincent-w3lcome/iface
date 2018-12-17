@@ -53,6 +53,7 @@ class Answerer(object):
             v = Video(record)
             v.show()
             msgBuf.labelIndex.update(str(v.id))
+            msgBuf.setReply(v.content)
             
         logging.info("=======================================================\n")
 
