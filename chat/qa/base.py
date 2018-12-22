@@ -1,10 +1,10 @@
 # coding=utf-8
 import logging
+import db.settings as settings
 
 from chat.match.labelMatcher import labelMatcher
 from chat.match.containMatcher import containMatcher
 from chat.match.bm25Matcher import bestMatchingMatcher
-from db import settings
 from db.sql import Db
 from db.video import Video
 
