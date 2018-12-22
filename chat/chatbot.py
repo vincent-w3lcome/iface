@@ -52,6 +52,38 @@ class Chatbot(object):
 
         return str(ret)
 
+    def searchVideoTag(self, speech):
+
+        logging.info("检测到 searchVideoTag 输入: '%s'" % speech)
+        msgBuf = messageBuffer(user="defaultUser", query=speech)
+        self.answerer.getLabelResponse(msgBuf, self.threshold)
+        self.saveMsg(msgBuf)
+        return str(msgBuf.getReply())
+
+    def searchVideoTitle(self, speech):
+
+        logging.info("检测到 searchVideoTitle 输入: '%s'" % speech)
+        msgBuf = messageBuffer(user="defaultUser", query=speech)
+        self.answerer.getContainResponse(msgBuf, self.threshold)
+        self.saveMsg(msgBuf)
+        return str(msgBuf.getReply())
+
+    def searchVideoName(self, speech):
+
+        logging.info("检测到 searchVideoName 输入: '%s'" % speech)
+        msgBuf = messageBuffer(user="defaultUser", query=speech)
+        self.answerer.getContainResponse(msgBuf, self.threshold)
+        self.saveMsg(msgBuf)
+        return str(msgBuf.getReply())
+
+    def searchTag(self, speech):
+
+        logging.info("检测到 searchTag 输入: '%s'" % speech)
+        msgBuf = messageBuffer(user="defaultUser", query=speech)
+        self.answerer.getContainResponse(msgBuf, self.threshold)
+        self.saveMsg(msgBuf)
+        return str(msgBuf.getReply())
+
     def analyse(self, msgBuf, threshold=0):
         #self.answerer.getResponse(msgBuf, threshold)
         self.answerer.getLabelResponse(msgBuf, threshold)
