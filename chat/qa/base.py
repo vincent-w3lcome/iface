@@ -1,6 +1,6 @@
 # coding=utf-8
 import logging
-import db.settings as settings
+import db.config as config
 
 from chat.match.labelMatcher import labelMatcher
 from chat.match.containMatcher import containMatcher
@@ -12,7 +12,7 @@ class Answerer(object):
 
     def __init__(self):
 
-        self.database = Db(database=settings.DATABASE_NAME)
+        self.database = Db(database=config.DATABASE_NAME)
         self.labelMatcher = labelMatcher(self.database)
         self.containMatcher = containMatcher(self.database)
         # self.moduleTest()
@@ -33,9 +33,9 @@ class Answerer(object):
 
         query = msgBuf.getQuery()
 
-        self.labelMatcher.match(settings.VIDEO_TABLE_NAME, query)
+        self.labelMatcher.match(config.VIDEO_TABLE_NAME, query)
 
-        self.containMatcher.match(settings.VIDEO_TABLE_NAME, query)
+        self.containMatcher.match(config.VIDEO_TABLE_NAME, query)
 
         logging.info("=======================================================\n")
 
@@ -45,7 +45,7 @@ class Answerer(object):
 
         tag = msgBuf.getQuery()
 
-        records = self.labelMatcher.match(settings.VIDEO_TABLE_NAME, tag)
+        records = self.labelMatcher.match(config.VIDEO_TABLE_NAME, tag)
 
         if len(records) <= 0:
             return
@@ -64,7 +64,7 @@ class Answerer(object):
 
         heading = msgBuf.getQuery()
 
-        records = self.containMatcher.match(settings.VIDEO_TABLE_NAME, heading)
+        records = self.containMatcher.match(config.VIDEO_TABLE_NAME, heading)
 
         if len(records) <= 0:
             return
