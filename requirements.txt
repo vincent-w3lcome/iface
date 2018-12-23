@@ -2,3 +2,4 @@ jieba
 flask
 uwsgi
 mysqlclient
+DBUtils
