@@ -58,4 +58,5 @@ class Db(object):
         return self.execute(strCmd)
 
     def close(self):
+        self._cursor.close()
         self._con.close()
