@@ -12,7 +12,7 @@ class Answerer(object):
 
     def __init__(self):
 
-        self.database = Db(database=config.DATABASE_NAME)
+        self.database = Db()
         self.labelMatcher = labelMatcher(self.database)
         self.containMatcher = containMatcher(self.database)
         # self.moduleTest()

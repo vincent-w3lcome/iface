@@ -1,19 +1,35 @@
 # -*- coding: utf-8 -*-#
 import logging
 import MySQLdb
+from DBUtils.PooledDB import PooledDB
+from db import config
 
 class Db(object):
 
-    def __init__(self, host="localhost", user="root", passwd="yuwenmao", database="yuwenmao"):
+    __pool = None
 
-        self.con = MySQLdb.connect(host, user, passwd, database, charset="utf8")
-        self.cursor = self.con.cursor()
+    def __init__(self):
+
+        self._con = Db.__getCon()
+        self._cursor = self._con.cursor()
+
+    @staticmethod
+    def __getCon():
+        if Db.__pool is None:
+            __pool = PooledDB(creator=MySQLdb, mincached=2, maxcached=5,
+                              host=config.DATABASE_HOST,
+                              user=config.DATABASE_USER,
+                              passwd=config.DATABASE_PASSWORD,
+                              db=config.DATABASE_NAME,
+                              charset=config.DATABASE_CHARSET)
+
+        return __pool.connection()
 
     def execute(self, cmd):
         ret = ""
         try:
-            self.cursor.execute(cmd)
-            ret = self.cursor.fetchall()
+            self._cursor.execute(cmd)
+            ret = self._cursor.fetchall()
         except Exception as e:
             logging.error("Unable to execute cmd: %s, ERROR: %s" % (cmd, e))
 
@@ -42,4 +58,4 @@ class Db(object):
         return self.execute(strCmd)
 
     def close(self):
-        self.con.close()
+        self._con.close()
