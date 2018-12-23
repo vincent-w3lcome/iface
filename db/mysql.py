@@ -4,18 +4,18 @@ import MySQLdb
 from DBUtils.PooledDB import PooledDB
 from db import config
 
-class Db(object):
+class Mysql(object):
 
     __pool = None
 
     def __init__(self):
 
-        self._con = Db.__getCon()
+        self._con = Mysql.__getCon()
         self._cursor = self._con.cursor()
 
     @staticmethod
     def __getCon():
-        if Db.__pool is None:
+        if Mysql.__pool is None:
             __pool = PooledDB(creator=MySQLdb, mincached=2, maxcached=5,
                               host=config.DATABASE_HOST,
                               user=config.DATABASE_USER,

@@ -5,14 +5,14 @@ import db.config as config
 from chat.match.labelMatcher import labelMatcher
 from chat.match.containMatcher import containMatcher
 from chat.match.bm25Matcher import bestMatchingMatcher
-from db.sql import Db
+from db.mysql import Mysql
 from db.video import Video
 
 class Answerer(object):
 
     def __init__(self):
 
-        self.database = Db()
+        self.database = Mysql()
         self.labelMatcher = labelMatcher(self.database)
         self.containMatcher = containMatcher(self.database)
         # self.moduleTest()
