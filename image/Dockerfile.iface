@@ -17,6 +17,6 @@ RUN yum install -y python34 python34-virtualenv python34-devel gcc git mysql-com
     pip install DBUtils && \
     pip install mysqlclient
 
-ADD ./entrypoint.sh /yuwenmao/
+ADD ./image/entrypoint.sh /yuwenmao/
 
 ENTRYPOINT ["/yuwenmao/entrypoint.sh"]
