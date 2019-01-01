@@ -80,9 +80,9 @@ class Chatbot(object):
 
         logging.info("检测到 searchTag 输入: '%s'" % speech)
         msgBuf = messageBuffer(user="defaultUser", query=speech)
-        self.answerer.getContainResponse(msgBuf, self.threshold)
+        self.answerer.getLabelResponse(msgBuf, self.threshold)
         self.saveMsg(msgBuf)
-        return str(msgBuf.getReply())
+        return json.dumps(msgBuf.getJsonReply(), ensure_ascii=False)
 
     def analyse(self, msgBuf, threshold=0):
         #self.answerer.getResponse(msgBuf, threshold)

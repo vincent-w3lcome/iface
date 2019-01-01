@@ -1,0 +1,31 @@
+swagger: "2.0"
+info:
+  description: This is the swagger file that goes with our server iface code
+  version: "1.0.0"
+  title: Swagger REST Article
+
+consumes:
+  - "application/json"
+produces:
+  - "application/json"
+
+basePath: "/ywm/v1"
+
+# Paths supported by the server application
+paths:
+  /search/tag:
+    get:
+      operationId: "api.v1.search.searchTag"
+      parameters:
+        - name: message
+          description: Search with provided tag.
+          in: query
+          type: string
+          required: true
+      summary: "The tags supported by the server application"
+      description: "Read the list of tags"
+      responses:
+        200:
+          description: "Successful search provided tag"
+          schema:
+            type: object

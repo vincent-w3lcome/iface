@@ -1,4 +1,5 @@
 jieba
+connexion
 flask
 uwsgi
 mysqlclient

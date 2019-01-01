@@ -1,4 +1,5 @@
 # coding=utf-8
+import json
 import logging
 import db.config as config
 
@@ -54,7 +55,7 @@ class Answerer(object):
             v = Video(record)
             v.show()
             msgBuf.labelIndex.update(str(v.id))
-            msgBuf.setReply(v.content)
+            msgBuf.setReply(json.dumps(v.__dict__, ensure_ascii=False))
             
         logging.info("=======================================================\n")
 

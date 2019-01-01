@@ -11,11 +11,7 @@ RUN yum install -y python34 python34-virtualenv python34-devel gcc git mysql-com
     virtualenv-3.4 /yuwenmao/iface/venv && \
     source /yuwenmao/iface/venv/bin/activate && \
     pip install --upgrade pip && \
-    pip install jieba && \
-    pip install flask && \
-    pip install uwsgi && \
-    pip install DBUtils && \
-    pip install mysqlclient
+    pip install -r /yuwenmao/iface/requirements.txt
 
 ADD ./image/entrypoint.sh /yuwenmao/
 

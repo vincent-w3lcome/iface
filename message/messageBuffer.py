@@ -47,6 +47,9 @@ class messageBuffer(object):
     def getReply(self):
         return self.reply
 
+    def getJsonReply(self):
+        return {"Data": self.getReply()}
+
 
 class Buffer(object):
 
