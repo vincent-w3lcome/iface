@@ -4,10 +4,13 @@ import logging
 import db.config as config
 
 from chat.match.labelMatcher import labelMatcher
+from chat.match.linkMatcher import linkMatcher
 from chat.match.containMatcher import containMatcher
 from chat.match.bm25Matcher import bestMatchingMatcher
 from db.mysql import Mysql
 from db.video import Video
+from db.label import Label
+from db.link import Link
 
 class Answerer(object):
 
@@ -15,6 +18,7 @@ class Answerer(object):
 
         self.database = Mysql()
         self.labelMatcher = labelMatcher(self.database)
+        self.linkMatcher = linkMatcher(self.database)
         self.containMatcher = containMatcher(self.database)
         # self.moduleTest()
 
@@ -34,9 +38,9 @@ class Answerer(object):
 
         query = msgBuf.getQuery()
 
-        self.labelMatcher.match(config.VIDEO_TABLE_NAME, query)
+        self.labelMatcher.match(config.LABEL_TABLE_NAME, query)
 
-        self.containMatcher.match(config.VIDEO_TABLE_NAME, query)
+        self.containMatcher.match(config.LABEL_TABLE_NAME, query)
 
         logging.info("=======================================================\n")
 
@@ -46,17 +50,17 @@ class Answerer(object):
 
         tag = msgBuf.getQuery()
 
-        records = self.labelMatcher.match(config.VIDEO_TABLE_NAME, tag)
+        records = self.labelMatcher.match(config.LABEL_TABLE_NAME, tag)
 
         if len(records) <= 0:
             return
 
         for record in records:
-            v = Video(record)
-            v.show()
-            msgBuf.labelIndex.update(str(v.id))
-            msgBuf.setReply(json.dumps(v.__dict__, ensure_ascii=False))
-            
+            s = Label(record)
+            s.show()
+            msgBuf.labelIndex.update(str(s.id))
+            msgBuf.setReply(json.dumps(s.__dict__, ensure_ascii=False))
+
         logging.info("=======================================================\n")
 
     def getContainResponse(self, msgBuf, threshold=0):
@@ -65,16 +69,36 @@ class Answerer(object):
 
         heading = msgBuf.getQuery()
 
-        records = self.containMatcher.match(config.VIDEO_TABLE_NAME, heading)
+        records = self.containMatcher.match(config.LABEL_TABLE_NAME, heading)
 
         if len(records) <= 0:
             return
 
         for record in records:
-            v = Video(record)
-            v.show()
-            msgBuf.containIndex.update(str(v.id))
+            s = Label(record)
+            s.show()
+            msgBuf.labelIndex.update(str(s.id))
+            msgBuf.setReply(json.dumps(s.__dict__, ensure_ascii=False))
             
+        logging.info("=======================================================\n")
+
+    def getLinkResponse(self, msgBuf):
+
+        logging.info("=======================================================\n")
+
+        filename = msgBuf.getQuery()
+
+        records = self.linkMatcher.match(config.LINK_TABLE_NAME, filename)
+
+        if len(records) <= 0:
+            return
+
+        for record in records:
+            l = Link(record)
+            l.show()
+            msgBuf.labelIndex.update(str(l.id))
+            msgBuf.setReply(json.dumps(l.__dict__, ensure_ascii=False))
+
         logging.info("=======================================================\n")
 
     def randomPick(self, answers):

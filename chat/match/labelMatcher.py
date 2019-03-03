@@ -19,7 +19,9 @@ class labelMatcher(Matcher):
             logging.info("Empty Query Table Detected, skip label matching")
             return set()
 
-        ret = self.db.queryContain(table, "tags", tag)
+        ret = self.db.queryContainOr(table, label1=tag, label2=tag, label3=tag, label4=tag,
+                                   filename=tag, family=tag, year=tag, category=tag, region=tag, score=tag,
+                                   atype=tag, sub=tag, big=tag, small=tag, quality=tag, difficulity=tag)
         logging.debug("Matched database records: %s", ret )
 
         return ret

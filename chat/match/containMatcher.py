@@ -19,7 +19,7 @@ class containMatcher(Matcher):
             logging.info("Empty Query Table Detected, skip contain matching")
             return set()
 
-        ret = self.db.queryContain(table, "content", heading)
+        ret = self.db.queryContainOr(table, filename=heading)
         logging.debug("containMatches records: '%s'", ret)
 
         return ret

@@ -29,3 +29,19 @@ paths:
           description: "Successful search provided tag"
           schema:
             type: object
+  /search/link:
+    get:
+      operationId: "api.v1.search.searchLink"
+      parameters:
+        - name: message
+          description: Search links with provided filename.
+          in: query
+          type: string
+          required: true
+      summary: "The links supported by the server application"
+      description: "Read the list of links"
+      responses:
+        200:
+          description: "Successful search provided filename"
+          schema:
+            type: object

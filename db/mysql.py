@@ -35,7 +35,7 @@ class Mysql(object):
 
         return ret
 
-    def query(self, table, **kwargs):
+    def queryEqualAnd(self, table, **kwargs):
         cmd = list()
         cmd.append("SELECT * FROM %s " % table)
         if kwargs:
@@ -46,11 +46,55 @@ class Mysql(object):
 
         return self.execute(strCmd)
 
-    def queryContain(self, table, column, content):
+    def queryEqualOr(self, table, **kwargs):
         cmd = list()
         cmd.append("SELECT * FROM %s " % table)
-        if column:
-            cmd.append("WHERE %s LIKE " % (column) + "'%" + "%s" % (content) + "%'")
+        if kwargs:
+            cmd.append("WHERE " + " OR ".join("%s = '%s'" % (k, v) for k, v in kwargs.items()))
+        cmd.append(";\n")
+
+        strCmd = "".join(cmd)
+
+        return self.execute(strCmd)
+
+    def queryContainOr(self, table, **kwargs):
+        cmd = list()
+        cmd.append("SELECT * FROM %s " % table)
+
+        if kwargs:
+            num = 1
+            cmd.append("WHERE ( ")
+            for k, v in kwargs.items():
+                num = num + 1
+                cmd.append("".join("%s LIKE '%%" % k))
+                cmd.append("".join("%s" % v))
+                cmd.append("".join("%'"))
+                if num <= len(kwargs):
+                    cmd.append(" OR ")
+            cmd.append(" )")
+
+        cmd.append(";\n")
+
+        strCmd = "".join(cmd)
+
+        return self.execute(strCmd)
+
+    def queryContainAnd(self, table, **kwargs):
+        cmd = list()
+        cmd.append("SELECT * FROM %s " % table)
+
+        if kwargs:
+            num = 1
+            cmd.append("WHERE ( ")
+            for k, v in kwargs.items():
+                num = num + 1
+                cmd.append("".join("%s LIKE '%%" % k))
+                cmd.append("".join("%s" % v))
+                cmd.append("".join("%'"))
+                if num <= len(kwargs):
+                    cmd.append(" AND ")
+            cmd.append(" )")
+
         cmd.append(";\n")
 
         strCmd = "".join(cmd)

@@ -84,10 +84,19 @@ class Chatbot(object):
         self.saveMsg(msgBuf)
         return json.dumps(msgBuf.getJsonReply(), ensure_ascii=False)
 
+    def searchLink(self, speech):
+
+        logging.info("检测到 searchLink 输入: '%s'" % speech)
+        msgBuf = messageBuffer(user="defaultUser", query=speech)
+        self.answerer.getLinkResponse(msgBuf)
+        self.saveMsg(msgBuf)
+        return json.dumps(msgBuf.getJsonReply(), ensure_ascii=False)
+
     def analyse(self, msgBuf, threshold=0):
         #self.answerer.getResponse(msgBuf, threshold)
-        self.answerer.getLabelResponse(msgBuf, threshold)
-        self.answerer.getContainResponse(msgBuf, threshold)
+        #self.answerer.getLabelResponse(msgBuf, threshold)
+        #self.answerer.getContainResponse(msgBuf, threshold)
+        self.answerer.getLinkResponse(msgBuf)
 
     def saveMsg(self, msgBuf, path="./"):
         path = os.path.join(os.path.dirname(__file__), "data", "msgHistory")

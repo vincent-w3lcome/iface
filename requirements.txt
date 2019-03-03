@@ -1,5 +1,5 @@
 jieba
-connexion
+connexion[swagger-ui]
 flask
 uwsgi
 mysqlclient
