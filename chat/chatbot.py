@@ -76,6 +76,14 @@ class Chatbot(object):
         self.saveMsg(msgBuf)
         return str(msgBuf.getReply())
 
+    def searchVideo(self, speech):
+
+        logging.info("检测到 searchVideo 输入: '%s'" % speech)
+        msgBuf = messageBuffer(user="defaultUser", query=speech)
+        self.answerer.getVideoResponse(msgBuf)
+        self.saveMsg(msgBuf)
+        return json.dumps(msgBuf.getJsonReply(), ensure_ascii=False)
+
     def searchTag(self, speech):
 
         logging.info("检测到 searchTag 输入: '%s'" % speech)
@@ -96,7 +104,8 @@ class Chatbot(object):
         #self.answerer.getResponse(msgBuf, threshold)
         #self.answerer.getLabelResponse(msgBuf, threshold)
         #self.answerer.getContainResponse(msgBuf, threshold)
-        self.answerer.getLinkResponse(msgBuf)
+        #self.answerer.getLinkResponse(msgBuf)
+        self.answerer.getVideoResponse(msgBuf)
 
     def saveMsg(self, msgBuf, path="./"):
         path = os.path.join(os.path.dirname(__file__), "data", "msgHistory")

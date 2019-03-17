@@ -45,3 +45,19 @@ paths:
           description: "Successful search provided filename"
           schema:
             type: object
+  /search/video:
+    get:
+      operationId: "api.v1.search.searchVideo"
+      parameters:
+        - name: message
+          description: Search video Media Info with provided filename.
+          in: query
+          type: string
+          required: true
+      summary: "Search detailed Media Information from provide filename"
+      description: "Read the dict of Media Info"
+      responses:
+        200:
+          description: "Successful search provided filename"
+          schema:
+            type: object

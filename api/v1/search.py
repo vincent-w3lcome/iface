@@ -8,3 +8,6 @@ def searchTag(message):
 
 def searchLink(message):
     return chatter.searchLink(message)
+
+def searchVideo(message):
+    return chatter.searchVideo(message)

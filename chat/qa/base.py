@@ -6,6 +6,7 @@ import db.config as config
 from chat.match.labelMatcher import labelMatcher
 from chat.match.linkMatcher import linkMatcher
 from chat.match.containMatcher import containMatcher
+from chat.match.videoMatcher import videoMatcher
 from chat.match.bm25Matcher import bestMatchingMatcher
 from db.mysql import Mysql
 from db.video import Video
@@ -20,6 +21,7 @@ class Answerer(object):
         self.labelMatcher = labelMatcher(self.database)
         self.linkMatcher = linkMatcher(self.database)
         self.containMatcher = containMatcher(self.database)
+        self.videoMatcher = videoMatcher(self.database)
         # self.moduleTest()
 
     def moduleTest(self):
@@ -98,6 +100,25 @@ class Answerer(object):
             l.show()
             msgBuf.labelIndex.update(str(l.id))
             msgBuf.setReply(json.dumps(l.__dict__, ensure_ascii=False))
+
+        logging.info("=======================================================\n")
+
+    def getVideoResponse(self, msgBuf):
+
+        logging.info("=======================================================\n")
+
+        videoname = msgBuf.getQuery()
+
+        records = self.videoMatcher.match(config.VIDEO_TABLE_NAME, videoname)
+
+        if len(records) <= 0:
+            return
+
+        for record in records:
+            v = Video(record)
+            v.show()
+            msgBuf.labelIndex.update(str(v.id))
+            msgBuf.setReply(json.dumps(v.__dict__, ensure_ascii=False))
 
         logging.info("=======================================================\n")
 
