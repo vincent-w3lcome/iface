@@ -117,21 +117,26 @@ class Chatbot(object):
             msgBuf.setUser(userid)
 
         if ptype == "home":
+            logging.info("In page type.")
             self.answerer.getRandomVideoResponse(msgBuf)
 
         elif tab != "":
+            logging.info("In tab.")
             msgBuf.setQuery(tab)
             self.answerer.getVideoResponse(msgBuf, True)
 
         elif videoid != "":
+            logging.info("In video id.")
             msgBuf.setQuery(videoid)
             self.answerer.getVideoIDResponse(msgBuf)
 
         elif searchcontent != "":
+            logging.info("In search content.")
             msgBuf.setQuery(searchcontent)
             self.answerer.getVideoResponse(msgBuf, True)
 
         else:
+            logging.info("In else (no param match).")
             self.answerer.getRandomVideoResponse(msgBuf)
 
         ret = apiVideoData(msgBuf)
@@ -146,10 +151,10 @@ class Chatbot(object):
         #self.answerer.getLinkResponse(msgBuf)
         #self.answerer.getVideoResponse(msgBuf)
         #self.answerer.getVideoIDResponse(msgBuf)
-        #self.getVideos(1,"home","","","")
+        self.getVideos(1,"home","","","")
         #self.getVideos(1,"home","2018","","")
-        self.getVideos(1,"","","5285890784391032512","")
-        self.getVideos(1,"","","5285890784391032512","考题2018高考浙江卷现代文阅读补文学类文本阅读1200标清")
+        #self.getVideos(1,"","","5285890784391032512","")
+        #self.getVideos(1,"","","5285890784391032512","考题2018高考浙江卷现代文阅读补文学类文本阅读1200标清")
 
     def saveMsg(self, msgBuf, path="./"):
         path = os.path.join(os.path.dirname(__file__), "data", "msgHistory")

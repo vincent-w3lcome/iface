@@ -116,7 +116,7 @@ class apiVideoData(object):
                  '_hide': False,
                  'title': i["name"].replace('补', ''),
                  'subtitle': l["sub"].replace('补', ''),
-                 'tagtext': self.getLabels(l),
+                 'tagtext': l['category'],
                  'timelong': "05:12",
                  'year': l['year'].split('.')[0],
                  'region': l['region'],
