@@ -61,16 +61,28 @@ class Answerer(object):
 
         filename = msgBuf.getQuery()
 
-        records = self.linkMatcher.match(config.LINK_TABLE_NAME, filename)
+        record = self.linkMatcher.match(config.LINK_TABLE_NAME, filename=filename)
 
-        if len(records) <= 0:
-            return
-
-        for record in records:
+        if record is not None:
             l = Link(record)
             l.show()
-            msgBuf.labelIndex.update(str(l.id))
-            msgBuf.setReply(json.dumps(l.__dict__, ensure_ascii=False))
+            self.getLinkVideoRecord(msgBuf, l.recommend1)
+            self.getLinkVideoRecord(msgBuf, l.recommend2)
+            self.getLinkVideoRecord(msgBuf, l.recommend3)
+
+        logging.info("=======================================================\n")
+
+    def getLinkVideoRecord(self, msgBuf, videoName, threshold=0):
+
+        logging.info("=======================================================\n")
+
+        records = self.videoMatcher.match(config.VIDEO_TABLE_NAME, name=videoName)
+
+        for record in records:
+            v = Video(record)
+            v.show()
+            self.getVideoLabelRecord(msgBuf, videoName)
+            msgBuf.setReply(json.dumps(v.__dict__, ensure_ascii=False))
 
         logging.info("=======================================================\n")
 

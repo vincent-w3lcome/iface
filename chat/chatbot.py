@@ -100,8 +100,10 @@ class Chatbot(object):
         logging.info("检测到 searchLink 输入: '%s'" % speech)
         msgBuf = messageBuffer(user="defaultUser", query=speech)
         self.answerer.getLinkResponse(msgBuf)
+        ret = apiVideoData(msgBuf)
         self.saveMsg(msgBuf)
-        return json.dumps(msgBuf.getJsonReply(), ensure_ascii=False)
+        print(json.dumps(ret.getReply(), ensure_ascii=False))
+        return json.dumps(ret.getReply(), ensure_ascii=False)
 
     def getVideos(self, userid, ptype, tab, videoid, searchcontent):
 
@@ -148,10 +150,10 @@ class Chatbot(object):
         #self.answerer.getResponse(msgBuf, threshold)
         #self.answerer.getLabelResponse(msgBuf, threshold)
         #self.answerer.getContainResponse(msgBuf, threshold)
-        #self.answerer.getLinkResponse(msgBuf)
+        self.answerer.getLinkResponse(msgBuf)
         #self.answerer.getVideoResponse(msgBuf)
         #self.answerer.getVideoIDResponse(msgBuf)
-        self.getVideos(1,"home","","","")
+        #self.getVideos(1,"home","","","")
         #self.getVideos(1,"home","2018","","")
         #self.getVideos(1,"","","5285890784391032512","")
         #self.getVideos(1,"","","5285890784391032512","考题2018高考浙江卷现代文阅读补文学类文本阅读1200标清")

@@ -7,19 +7,36 @@ class linkMatcher(Matcher):
     def __init__(self, dbInstance):
         self.db = dbInstance
 
-    def match(self, table, filename):
+    def match(self, table, **kwargs):
 
-        logging.info("Starting matching links")
+        logging.info("match: Starting matching links")
 
-        if filename == None or filename == "":
-            logging.info("Empty Query Tag Detected, skip link matching")
+        if len(kwargs) <= 0:
+            logging.info("Empty Query condition Detected, skip link matching")
             return set()
 
         if table == None or table == "":
             logging.info("Empty Query Table Detected, skip link matching")
             return set()
 
-        ret = self.db.queryEqualAnd(table, filename=filename)
+        ret = self.db.queryEqualAndOne(table, **kwargs)
+        logging.debug("Matched database records: %s", ret )
+
+        return ret
+
+    def fuzzyMatch(self, table, **kwargs):
+
+        logging.info("fuzzyMatchName: Starting matching links")
+
+        if len(kwargs) <= 0:
+            logging.info("Empty Query condition Detected, skip link matching")
+            return set()
+
+        if table == None or table == "":
+            logging.info("Empty Query Table Detected, skip link matching")
+            return set()
+
+        ret = self.db.queryContainAndOne(table, **kwargs)
         logging.debug("Matched database records: %s", ret )
 
         return ret
