@@ -6,6 +6,7 @@ import random
 
 from .qa.base import Answerer
 from message.messageBuffer import messageBuffer
+from message.messageBuffer import apiVideoData
 
 class Chatbot(object):
 
@@ -46,11 +47,13 @@ class Chatbot(object):
         # Get reply that will be passed to media consumer(outQueue)
         ret = msgBuf.getReply()
 
+        apiRet = apiVideoData(msgBuf)
+
         # Save msgBuf per user
         # Log file at "chat/data/msgHistory/<userName>.txt"
         self.saveMsg(msgBuf)
 
-        return str(ret)
+        return str(apiRet.getReply())
 
     def searchVideoTag(self, speech):
 
@@ -100,12 +103,53 @@ class Chatbot(object):
         self.saveMsg(msgBuf)
         return json.dumps(msgBuf.getJsonReply(), ensure_ascii=False)
 
+    def getVideos(self, userid, ptype, tab, videoid, searchcontent):
+
+        logging.info("检测到 getVideos 输入: user id: '%s'" % userid)
+        logging.info("检测到 getVideos 输入: port type: '%s'" % ptype)
+        logging.info("检测到 getVideos 输入: tab: '%s'" % tab)
+        logging.info("检测到 getVideos 输入: video id: '%s'" % videoid)
+        logging.info("检测到 getVideos 输入: search content: '%s'" % searchcontent)
+
+        msgBuf = messageBuffer(user="defaultUser")
+
+        if userid != "":
+            msgBuf.setUser(userid)
+
+        if ptype == "home":
+            self.answerer.getRandomVideoResponse(msgBuf)
+
+        elif tab != "":
+            msgBuf.setQuery(tab)
+            self.answerer.getVideoResponse(msgBuf, True)
+
+        elif videoid != "":
+            msgBuf.setQuery(videoid)
+            self.answerer.getVideoIDResponse(msgBuf)
+
+        elif searchcontent != "":
+            msgBuf.setQuery(searchcontent)
+            self.answerer.getVideoResponse(msgBuf, True)
+
+        else:
+            self.answerer.getRandomVideoResponse(msgBuf)
+
+        ret = apiVideoData(msgBuf)
+        self.saveMsg(msgBuf)
+        print(json.dumps(ret.getReply(), ensure_ascii=False))
+        return json.dumps(ret.getReply(), ensure_ascii=False)
+
     def analyse(self, msgBuf, threshold=0):
         #self.answerer.getResponse(msgBuf, threshold)
         #self.answerer.getLabelResponse(msgBuf, threshold)
         #self.answerer.getContainResponse(msgBuf, threshold)
         #self.answerer.getLinkResponse(msgBuf)
-        self.answerer.getVideoResponse(msgBuf)
+        #self.answerer.getVideoResponse(msgBuf)
+        #self.answerer.getVideoIDResponse(msgBuf)
+        #self.getVideos(1,"home","","","")
+        #self.getVideos(1,"home","2018","","")
+        self.getVideos(1,"","","5285890784391032512","")
+        self.getVideos(1,"","","5285890784391032512","考题2018高考浙江卷现代文阅读补文学类文本阅读1200标清")
 
     def saveMsg(self, msgBuf, path="./"):
         path = os.path.join(os.path.dirname(__file__), "data", "msgHistory")
@@ -113,7 +157,7 @@ class Chatbot(object):
             os.mkdir(path)
 
         if msgBuf.user:
-            fileName = msgBuf.user + ".txt"
+            fileName = str(msgBuf.user) + ".txt"
         else:
             fileName = "noUser.txt"
 

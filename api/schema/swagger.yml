@@ -13,6 +13,42 @@ basePath: "/ywm/v1"
 
 # Paths supported by the server application
 paths:
+  /video:
+    get:
+      operationId: "api.v1.search.getVideos"
+      parameters:
+        - name: userid
+          in: query
+          description: user identification
+          type: string
+          required: true
+        - name: pagetype
+          in: query
+          description: page type
+          type: string
+          required: true
+        - name: tab
+          in: query
+          description: page tab
+          type: string
+          required: true
+        - name: currentvideoid
+          in: query
+          description: current video id
+          type: string
+          required: true
+        - name: searchcontent
+          in: query
+          description: search content
+          type: string
+          required: true
+      summary: "Get video with provided info"
+      description: "Retrun a list of video info"
+      responses:
+        200:
+          description: "Successful retrieve videos"
+          schema:
+            type: object
   /search/tag:
     get:
       operationId: "api.v1.search.searchTag"
@@ -61,3 +97,24 @@ paths:
           description: "Successful search provided filename"
           schema:
             type: object
+
+#definitions:
+#  Task:
+#    type: object
+#    description: task object
+#    properties:
+#      userid:
+#        type: string
+#        description: user identification
+#      pagetype:
+#        type: string
+#        description: page type
+#      tab:
+#        type: string
+#        description: page label
+#      currentvideoid:
+#        type: string
+#        description: current video id
+#      searchcontent:
+#        type: string
+#        description: current search content

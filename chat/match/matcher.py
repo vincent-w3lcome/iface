@@ -1,6 +1,3 @@
-import jieba
-
-
 class Matcher(object):
 
     def __init__(self):

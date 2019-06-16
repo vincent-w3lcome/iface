@@ -11,3 +11,6 @@ def searchLink(message):
 
 def searchVideo(message):
     return chatter.searchVideo(message)
+
+def getVideos(userid, pagetype, tab, currentvideoid, searchcontent):
+    return chatter.getVideos(userid, pagetype, tab, currentvideoid, searchcontent)

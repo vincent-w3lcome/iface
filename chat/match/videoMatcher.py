@@ -7,19 +7,36 @@ class videoMatcher(Matcher):
     def __init__(self, dbInstance):
         self.db = dbInstance
 
-    def match(self, table, videoname):
+    def match(self, table, **kwargs):
 
-        logging.info("Starting matching videos")
+        logging.info("match: Starting matching videos")
 
-        if videoname == None or videoname == "":
-            logging.info("Empty Query Tag Detected, skip video matching")
+        if len(kwargs) <= 0:
+            logging.info("Empty Query condition Detected, skip video matching")
             return set()
 
         if table == None or table == "":
             logging.info("Empty Query Table Detected, skip video matching")
             return set()
 
-        ret = self.db.queryEqualAnd(table, name=videoname)
+        ret = self.db.queryEqualAnd(table, **kwargs)
+        logging.debug("Matched database records: %s", ret )
+
+        return ret
+
+    def fuzzyMatch(self, table, **kwargs):
+
+        logging.info("fuzzyMatchName: Starting matching videos")
+
+        if len(kwargs) <= 0:
+            logging.info("Empty Query condition Detected, skip video matching")
+            return set()
+
+        if table == None or table == "":
+            logging.info("Empty Query Table Detected, skip video matching")
+            return set()
+
+        ret = self.db.queryContainAnd(table, **kwargs)
         logging.debug("Matched database records: %s", ret )
 
         return ret
