@@ -86,13 +86,29 @@ class Answerer(object):
 
         logging.info("=======================================================\n")
 
+    def getLabelVideoRecord(self, msgBuf, videoName, threshold=0):
+
+        logging.info("=======================================================\n")
+
+        records = self.videoMatcher.match(config.VIDEO_TABLE_NAME, name=videoName)
+
+        for record in records:
+            v = Video(record)
+            v.show()
+            msgBuf.setReply(json.dumps(v.__dict__, ensure_ascii=False))
+
+        logging.info("=======================================================\n")
+
     def getLabelResponse(self, msgBuf, threshold=0):
 
         logging.info("=======================================================\n")
 
-        tag = msgBuf.getQuery()
+        query = msgBuf.getQuery()
 
-        records = self.labelMatcher.match(config.LABEL_TABLE_NAME, filename=query)
+        if query == "":
+            return
+
+        records = self.labelMatcher.fuzzyMatch(config.LABEL_TABLE_NAME, filename=query)
 
         if len(records) <= 0:
             return
@@ -100,8 +116,8 @@ class Answerer(object):
         for record in records:
             s = Label(record)
             s.show()
-            msgBuf.labelIndex.update(str(s.id))
-            msgBuf.setReply(json.dumps(s.__dict__, ensure_ascii=False))
+            msgBuf.setLabel(json.dumps(s.__dict__, ensure_ascii=False))
+            self.getLabelVideoRecord(msgBuf, s.filename)
 
         logging.info("=======================================================\n")
 

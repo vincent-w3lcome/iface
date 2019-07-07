@@ -107,6 +107,7 @@ class apiVideoData(object):
             i = json.loads(item)
             l = json.loads(self.msgBuf.getLabel()[index])
             v = {'name': i["name"],
+                 'updateTime': i['updateTime'],
                  'itemId': i["id"],
                  'itemType': i["type"],
                  'cid': i["classId"],

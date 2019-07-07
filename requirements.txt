@@ -1,4 +1,3 @@
-jieba
 connexion[swagger-ui]
 flask
 uwsgi

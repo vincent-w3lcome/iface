@@ -92,8 +92,10 @@ class Chatbot(object):
         logging.info("检测到 searchTag 输入: '%s'" % speech)
         msgBuf = messageBuffer(user="defaultUser", query=speech)
         self.answerer.getLabelResponse(msgBuf, self.threshold)
+        ret = apiVideoData(msgBuf)
         self.saveMsg(msgBuf)
-        return json.dumps(msgBuf.getJsonReply(), ensure_ascii=False)
+        print(json.dumps(ret.getReply(), ensure_ascii=False))
+        return json.dumps(ret.getReply(), ensure_ascii=False)
 
     def searchLink(self, speech):
 
@@ -148,9 +150,9 @@ class Chatbot(object):
 
     def analyse(self, msgBuf, threshold=0):
         #self.answerer.getResponse(msgBuf, threshold)
-        #self.answerer.getLabelResponse(msgBuf, threshold)
+        self.answerer.getLabelResponse(msgBuf, threshold)
         #self.answerer.getContainResponse(msgBuf, threshold)
-        self.answerer.getLinkResponse(msgBuf)
+        #self.answerer.getLinkResponse(msgBuf)
         #self.answerer.getVideoResponse(msgBuf)
         #self.answerer.getVideoIDResponse(msgBuf)
         #self.getVideos(1,"home","","","")
