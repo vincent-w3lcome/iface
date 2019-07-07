@@ -105,10 +105,14 @@ class Answerer(object):
 
         query = msgBuf.getQuery()
 
-        if query == "":
-            return
+        logging.info(query.split(","))
 
-        records = self.labelMatcher.fuzzyMatch(config.LABEL_TABLE_NAME, filename=query)
+        l = query.split(",")
+        if len(l) != 3:
+            records = self.labelMatcher.fuzzyMatch(config.LABEL_TABLE_NAME, filename=query)
+        else:
+            records = self.labelMatcher.fuzzyMatch(config.LABEL_TABLE_NAME, \
+                        year=l[0], region=l[1], sub=l[2])
 
         if len(records) <= 0:
             return

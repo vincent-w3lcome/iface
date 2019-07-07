@@ -7,6 +7,7 @@ import random
 from .qa.base import Answerer
 from message.messageBuffer import messageBuffer
 from message.messageBuffer import apiVideoData
+from message.messageBuffer import apiTabData
 
 class Chatbot(object):
 
@@ -86,6 +87,15 @@ class Chatbot(object):
         self.answerer.getVideoResponse(msgBuf)
         self.saveMsg(msgBuf)
         return json.dumps(msgBuf.getJsonReply(), ensure_ascii=False)
+
+    def searchTab(self, speech):
+
+        logging.info("检测到 searchTab 输入: '%s'" % speech)
+        msgBuf = messageBuffer(user="defaultUser", query=speech)
+        ret = apiTabData(msgBuf)
+        self.saveMsg(msgBuf)
+        print(json.dumps(ret.getReply(), ensure_ascii=False))
+        return json.dumps(ret.getReply(), ensure_ascii=False)
 
     def searchTag(self, speech):
 

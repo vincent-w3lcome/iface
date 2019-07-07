@@ -3,6 +3,9 @@ from chat import chatbot
 
 chatter = chatbot.Chatbot(threshold=50, debug=False)
 
+def searchTab(message):
+    return chatter.searchTab(message)
+
 def searchTag(message):
     return chatter.searchTag(message)
 

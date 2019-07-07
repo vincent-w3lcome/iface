@@ -49,6 +49,22 @@ paths:
           description: "Successful retrieve videos"
           schema:
             type: object
+  /search/tab:
+    get:
+      operationId: "api.v1.search.searchTab"
+      parameters:
+        - name: message
+          description: Get supported tabs.
+          in: query
+          type: string
+          required: true
+      summary: "The tabs supported by the server application"
+      description: "Read the list of tabs"
+      responses:
+        200:
+          description: "Successful search provided tab"
+          schema:
+            type: object
   /search/tag:
     get:
       operationId: "api.v1.search.searchTag"

@@ -36,7 +36,7 @@ class labelMatcher(Matcher):
             logging.info("Empty Query Table Detected, skip label matching")
             return set()
 
-        ret = self.db.queryContainOr(table, **kwargs)
+        ret = self.db.queryContainAnd(table, **kwargs)
         logging.debug("Matched database records: %s", ret )
 
         return ret

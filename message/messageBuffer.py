@@ -60,6 +60,14 @@ class messageBuffer(object):
     def getJsonReply(self):
         return {"Data": self.getReply()}
 
+class apiTabData(object):
+    def __init__(self, msgBuf):
+        self.msgBuf = msgBuf
+
+    def getReply(self):
+        return { "years": ["2016", "2017", "2018"],
+                 "regions": ["全国一", "全国二", "全国三", "北京", "江苏", "天津", "浙江", "山东"],
+                 "categories": ["论述类", "实用类", "文学类", "文言文", "古代诗歌阅读"]}
 
 class apiVideoData(object):
     def __init__(self, msgBuf):
